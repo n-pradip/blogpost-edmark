@@ -1,9 +1,12 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from .models import BlogpostModel
-from .forms import BlogPostForm
+from .forms import BlogPostForm, CategoryForm
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import CategoryModel
+from .forms import CategoryForm
 
 @login_required
 def home(request):
@@ -14,50 +17,45 @@ def home(request):
     # print(blogpost_objs.image.)
     return render(request, 'home.html', context)
 
-def category(request):
-    category_objs = BlogpostModel.objects.filter(category='')
-    context={}
-    return render(request, 'category.html', context)
+@login_required
+def category_list(request):
+    categories = CategoryModel.objects.all()
+    return render(request, 'category_list.html', {'categories': categories})
 
+@login_required
+def category_detail(request, pk):
+    category = get_object_or_404(CategoryModel, pk=pk)
+    return render(request, 'category_detail.html', {'category': category})
 
-
-def blogpost_create(request):
+@login_required
+def category_create(request):
     if request.method == 'POST':
-        form = BlogPostForm(request.POST)
+        form = CategoryForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('blogpost_list')
+            return redirect('category_list')
     else:
-        form = BlogPostForm()
-    return render(request, 'blogpost_create.html', {'form': form})
+        form = CategoryForm()
+    return render(request, 'category_form.html', {'form': form})
 
-def blogpost_update(request, pk):
-    post = get_object_or_404(BlogpostModel, pk=pk)
+@login_required
+def category_update(request, pk):
+    category = get_object_or_404(CategoryModel, pk=pk)
     if request.method == 'POST':
-        form = BlogPostForm(request.POST, instance=post)
+        form = CategoryForm(request.POST, instance=category)
         if form.is_valid():
             form.save()
-            return redirect('blogpost_list')
+            return redirect('category_list')
     else:
-        form = BlogPostForm(instance=post)
-    return render(request, 'blogpost_update.html', {'form': form})
+        form = CategoryForm(instance=category)
+    return render(request, 'category_form.html', {'form': form})
 
-def blogpost_delete(request, pk):
-    post = get_object_or_404(BlogpostModel, pk=pk)
+@login_required
+def category_delete(request, pk):
+    category = get_object_or_404(CategoryModel, pk=pk)
     if request.method == 'POST':
-        post.delete()
-        return redirect('blogpost_list')
-    return render(request, 'blogpost_delete.html', {'post': post})
+        category.delete()
+        return redirect('category_list')
+    return render(request, 'category_confirm_delete.html', {'category': category})
 
 
-
-
-def register(request):
-    if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('home')
-    else:
-        form = UserCreationForm()
-    return render(request, 'register.html', {'form': form})

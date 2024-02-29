@@ -40,7 +40,7 @@
         <div class="card-body">
         <h5 class="card-title">{{each.title}}</h5>
         <p class="card-text">{{each.content |truncatewords:25}}</p>
-        <a href="#" class="btn btn-primary">View more</a>
+        <a href="{% url 'blogpost_detail' blogpost_id=each.id %}" class="btn btn-primary" >View more</a>
         </div>
     </div>
 {% endfor %}

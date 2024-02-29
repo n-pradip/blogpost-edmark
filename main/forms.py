@@ -1,7 +1,15 @@
 from django import forms
 from .models import BlogpostModel
+from .models import CategoryModel
 
-class BlogPostForm(forms.ModelForm):
+class CategoryForm(forms.ModelForm):
+    class Meta:
+        model = CategoryModel
+        fields = ['title', 'description']
+
+from .models import BlogpostModel
+
+class BlogpostForm(forms.ModelForm):
     class Meta:
         model = BlogpostModel
-        fields = '__all__'
+        fields = ['title', 'image', 'author', 'category', 'content']
