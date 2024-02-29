@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from .models import BlogpostModel
-from .forms import BlogPostForm, CategoryForm
+from .forms import  CategoryForm
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
@@ -59,3 +59,12 @@ def category_delete(request, pk):
     return render(request, 'category_confirm_delete.html', {'category': category})
 
 
+def register(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+    else:
+        form = UserCreationForm()
+    return render(request, 'register.html', {'form': form})

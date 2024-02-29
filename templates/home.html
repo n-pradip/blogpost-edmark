@@ -16,7 +16,7 @@
                     <a class="nav-link active" aria-current="page" href="#">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Category</a>
+                    <a class="nav-link" href="/category">Category</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">About</a>
@@ -40,7 +40,7 @@
         <div class="card-body">
         <h5 class="card-title">{{each.title}}</h5>
         <p class="card-text">{{each.content |truncatewords:25}}</p>
-        <a href="{% url 'blogpost_detail' blogpost_id=each.id %}" class="btn btn-primary" >View more</a>
+        <a href="/" class="btn btn-primary" >View more</a>
         </div>
     </div>
 {% endfor %}
